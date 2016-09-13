@@ -4,16 +4,15 @@ class Movie < ActiveRecord::Base
   has_many :categories, through: :movie_categories
   accepts_nested_attributes_for :categories
 
-  def self.highest_rated
+  def self.highest_to_lowest
     joins(:reviews).group('movies.id').order('AVG(reviews.rating) DESC')
-    # return all of the movies ordered by their average review score
   end
 
   def self.eighties
     self.where(release_year: (1980..1990))
   end
 
-  def self.lowest_rated
+  def self.lowest_to_highest
     joins(:reviews).group('movies.id').order('AVG(reviews.rating)')
   end
 
@@ -29,5 +28,6 @@ class Movie < ActiveRecord::Base
   def average_rating
     reviews.average('reviews.rating').to_f
   end
+
 
 end
